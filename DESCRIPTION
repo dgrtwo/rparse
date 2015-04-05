@@ -1,0 +1,20 @@
+Package: rparse
+Type: Package
+Title: Access the Parse API
+Version: 0.1
+Date: 2015-04-05
+Authors@R: person("David", "Robinson", email = "admiral.david@gmail.com", role = c("aut", "cre"))
+Maintainer: David Robinson <admiral.david@gmail.com>
+Description: API Client for the cloud backend service Parse. Includes functions
+    for saving, querying, and deleting objects, as well as creating and
+    authenticating users.
+License: MIT + file LICENSE
+LazyData: TRUE
+Imports: httr,
+    dplyr,
+    jsonlite,
+    rjson
+Authors: David Robinson <admiral.david@gmail.com> [aut, cre]
+URL: http://github.com/dgrtwo/rparse
+BugReports: http://github.com/dgrtwo/rparse/issues
+Suggests: testthat
