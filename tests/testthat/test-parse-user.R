@@ -75,3 +75,28 @@ test_that("a user can use ACL to save an object with private permissions", {
     parse_delete(u1)
     parse_logout()
 })
+
+test_that("ACL works for batch uploads", {
+    u1 <- parse_signup("user1", "swordfish")
+
+    scores <- data.frame(score = c(10, 20, 30), cheat = c(TRUE, TRUE, FALSE))
+    # add ACLs
+    scores$ACL <- list(ACL(public_write = FALSE),
+                       ACL(public_write = FALSE),
+                       ACL(public_read = FALSE, public_write = FALSE))
+
+    parse_save(scores, "GameScore")
+
+    s <- parse_query("GameScore")
+    expect_equal(nrow(s), 3)
+
+    parse_logout()
+
+    s <- parse_query("GameScore")
+    expect_equal(nrow(s), 2)
+
+    parse_login("user1", "swordfish")
+    remove_all("GameScore")
+    parse_delete(u1)
+    parse_logout()
+})

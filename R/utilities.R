@@ -22,6 +22,12 @@ batch_body <- function(method, path, body = NULL) {
         req$method <- method
         req$path <- path
         req <- apply(req, 1, function(d) {
+            # have to unpack list columns so they're just an object
+            for (colname in names(d$body)) {
+                if (is(d$body[[colname]], "list") && length(d$body[[colname]]) == 1) {
+                    d$body[[colname]] <- d$body[[colname]][[1]]
+                }
+            }
             list(method = d$method, path = d$path, body = d$body)
         })
     }
