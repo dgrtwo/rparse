@@ -2,18 +2,8 @@ library(rparse)
 
 context("Parse Objects")
 
-
-remove_all <- Vectorize(function(class_name) {
-    # clean up by removing all GameScore
-    all_objs <- parse_query(class_name)
-    if (!is.null(all_objs)) {
-        parse_delete(all_objs)
-    }
-})
-
 # clear to start
 remove_all("GameScore")
-
 
 p <- parse_object("GameScore", score = 1337, save_after = FALSE)
 
