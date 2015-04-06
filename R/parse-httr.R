@@ -38,9 +38,9 @@ parse_api_GET <- function(path, ...) {
 #' @param body body of POST request
 #' @param to_json whether to convert body to JSON
 #' @param ... extra arguments passed on to \code{httr::POST}
-parse_api_POST <- function(path, body, to_json = TRUE, ...) {
-    if (to_json) {
-        body <- rjson::toJSON(body)
+parse_api_POST <- function(path, body = NULL, to_json = TRUE, ...) {
+    if (to_json && !is.null(body)) {
+        body <- rjson::toJSON(lapply(body, as.parse_pointer))
     }
     req <- httr::POST(Parse_URL, path = paste0("1/", path),
                       body = body, encode = "json",
@@ -58,7 +58,7 @@ parse_api_POST <- function(path, body, to_json = TRUE, ...) {
 #' @param ... extra arguments passed on to \code{httr::PUT}
 parse_api_PUT <- function(path, body, to_json = TRUE, ...) {
     if (to_json) {
-        body <- rjson::toJSON(body)
+        body <- rjson::toJSON(lapply(body, as.parse_pointer))
     }
 
     req <- httr::PUT(Parse_URL, path = paste0("1/", path), body = body,
@@ -91,7 +91,11 @@ process_Parse <- function(req) {
     if ("results" %in% names(j)) {
         j <- j$results
     }
-    if ("success" %in% names(j)) {
+    if ("result" %in% names(j) && length(j) == 1) {
+        # cloud code
+        j <- j$result
+    }
+    if ("success" %in% names(j) && length(j) == 1) {
         j <- j$success
     }
 

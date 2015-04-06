@@ -26,6 +26,10 @@ batch_body <- function(method, path, body = NULL) {
             for (colname in names(d$body)) {
                 if (is(d$body[[colname]], "list") && length(d$body[[colname]]) == 1) {
                     d$body[[colname]] <- d$body[[colname]][[1]]
+                    # if it's an object, make it a pointer
+                    if (is(d$body[[colname]], "parse_object")) {
+                        d$body[[colname]] <- as.parse_pointer(d$body[[colname]])
+                    }
                 }
             }
             list(method = d$method, path = d$path, body = d$body)

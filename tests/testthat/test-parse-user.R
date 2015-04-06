@@ -76,6 +76,7 @@ test_that("a user can use ACL to save an object with private permissions", {
     parse_logout()
 })
 
+
 test_that("ACL works for batch uploads", {
     u1 <- parse_signup("user1", "swordfish")
 
