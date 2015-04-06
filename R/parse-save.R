@@ -70,6 +70,17 @@ parse_save.list <- function(x, class_name, ...) {
 #'
 #' @export
 parse_save.parse_batch <- function(x, ...) {
+    if (nrow(x) > 50) {
+        # divide into smaller requests
+        f <- rep(seq_len(ceiling(nrow(x) / 50)), each = 50)
+        spl <- split(x, head(f, nrow(x)))
+        rets <- lapply(spl, function(e) {
+            parse_save(as.parse_batch(e, parse_class(x)), ...)
+        })
+
+        return(dplyr::bind_rows(rets))
+    }
+
     path <- file.path("classes", parse_class(x))
     method <- "POST"
 
