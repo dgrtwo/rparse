@@ -11,6 +11,12 @@ Parse_headers <- function() {
         stop("Must set PARSE_APPLICATION_ID and PARSE_API_KEY environment variables")
     }
 
+    # if a master key is set
+    PARSE_MASTER_KEY <- Sys.getenv("PARSE_MASTER_KEY")
+    if (PARSE_MASTER_KEY != "") {
+        header_strs <- c(header_strs[1], 'X-Parse-Master-Key' = PARSE_MASTER_KEY)
+    }
+
     # if currently logged in:
     user <- getOption("parse_user")
     if (!is.null(user)) {
@@ -80,8 +86,14 @@ parse_api_DELETE <- function(path, ...) {
 #' process a request object from Parse
 #'
 #' @param req request object returned from an httr method
+#'
+#' @return a JSON dictionary, or NULL if the body of the request was empty
 process_Parse <- function(req) {
     txt <- httr::content(req, as = "text")
+    if (txt == "") {  # empty responses
+        return(NULL)
+    }
+
     j <- jsonlite::fromJSON(txt)
 
     if (!is.null(j$error)) {

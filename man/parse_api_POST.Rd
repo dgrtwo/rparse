@@ -4,7 +4,7 @@
 \alias{parse_api_POST}
 \title{Perform a POST request to parse}
 \usage{
-parse_api_POST(path, body, to_json = TRUE, ...)
+parse_api_POST(path, body = NULL, to_json = TRUE, ...)
 }
 \arguments{
 \item{path}{path to send POST request to}

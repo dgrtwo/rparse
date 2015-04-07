@@ -9,6 +9,9 @@ process_Parse(req)
 \arguments{
 \item{req}{request object returned from an httr method}
 }
+\value{
+a JSON dictionary, or NULL if the body of the request was empty
+}
 \description{
 process a request object from Parse
 }
