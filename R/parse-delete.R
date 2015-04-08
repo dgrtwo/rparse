@@ -26,8 +26,20 @@ parse_delete.parse_object <- function(x, ...) {
 #'
 #' @export
 parse_delete.parse_batch <- function(x, ...) {
+    if (nrow(x) > 50) {
+        # divide into smaller requests
+        f <- rep(seq_len(ceiling(nrow(x) / 50)), each = 50)
+        spl <- split(x, head(f, nrow(x)))
+        rets <- lapply(spl, function(e) {
+            parse_delete(as.parse_batch(e, parse_class(x)), ...)
+        })
+
+        return()
+    }
+
     assert_object_id(x)
     paths <- paste0("classes/", parse_class(x), "/", x$objectId)
     body <- batch_body("DELETE", paths)
     parse_api_POST("batch", body, ...)
+    NULL
 }
