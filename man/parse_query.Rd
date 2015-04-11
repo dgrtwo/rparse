@@ -4,7 +4,7 @@
 \alias{parse_query}
 \title{retrieve an object based on a query}
 \usage{
-parse_query(class_name, object_id, ...)
+parse_query(class_name, object_id, limit = 1000, ...)
 }
 \arguments{
 \item{class_name}{name of Parse class}
