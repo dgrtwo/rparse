@@ -7,7 +7,7 @@
 #' @return a Parse object
 #'
 #' @export
-parse_query <- function(class_name, object_id, ...) {
+parse_query <- function(class_name, object_id, limit = 1000, ...) {
     url <- file.path("classes", class_name)
 
     if (!missing(object_id)) {
@@ -16,10 +16,9 @@ parse_query <- function(class_name, object_id, ...) {
     else {
         # as of now, accepts only exact queries (not filtering etc)
         params <- list(...)
+        q <- list(limit = limit)
         if (length(params) > 0) {
-            q <- list(where = rjson::toJSON(params))
-        } else {
-            q <- NULL
+            q[["where"]] <- rjson::toJSON(params)
         }
         ret <- parse_api_GET(url, query = q)
     }

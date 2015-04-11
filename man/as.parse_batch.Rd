@@ -2,8 +2,7 @@
 % Please edit documentation in R/parse-batch.R
 \name{as.parse_batch}
 \alias{as.parse_batch}
-\title{batch operations
-convert an object to a batch of Parse objects}
+\title{convert an object to a batch of Parse objects}
 \usage{
 as.parse_batch(x, ...)
 }
@@ -13,7 +12,6 @@ as.parse_batch(x, ...)
 \item{...}{extra arguments}
 }
 \description{
-batch operations
 convert an object to a batch of Parse objects
 }
 

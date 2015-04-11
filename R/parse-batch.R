@@ -1,5 +1,3 @@
-#' batch operations
-
 #' convert an object to a batch of Parse objects
 #'
 #' @param x object to be converted
