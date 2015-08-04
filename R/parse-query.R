@@ -5,7 +5,7 @@
 #' @param ... extra arguments, not used
 #'
 #' @return a Parse object
-#'
+#' 
 #' @export
 parse_query <- function(class_name, object_id, limit = 1000, skip=0, ...) {
     url <- file.path("classes", class_name)
@@ -43,6 +43,7 @@ rbindx<-function(a,b) {rbind(no_listcol(a),no_listcol(b))}
 # get all records and concatenate the output into a single data frame
 # remove any columns containing lists before concatenating
 
+#' @export
 parse_queryAll<-function(objName,...) {
   sum<-parse_query(objName,...)
   skipcount<-1000
