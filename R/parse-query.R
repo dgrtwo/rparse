@@ -31,3 +31,31 @@ parse_query <- function(class_name, object_id, limit = 1000, skip=0, ...) {
         as.parse_batch(ret, class_name)
     }
 }
+
+# support functions for queryAll
+
+no_listcol <- function(df) {
+  mask<-lapply(df[1,],function(x){!is.list(x)})
+  df[,as.vector(mask,mode='logical')]
+}
+rbindx<-function(a,b) {rbind(no_listcol(a),no_listcol(b))}
+
+# get all records and concatenate the output into a single data frame
+# remove any columns containing lists before concatenating
+
+parse_queryAll<-function(objName,...) {
+  sum<-parse_query(objName,...)
+  skipcount<-1000
+  if (is.null(sum)) {NULL}
+  else { 
+    repeat{
+      part<-parse_query(objName,skip=skipcount,...)
+      if (is.null(part)) {break}
+      else {
+        sum<-rbindx(sum,part)
+        skipcount <- skipcount+1000
+      }
+    }
+  }
+  sum
+}
