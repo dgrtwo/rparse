@@ -1,7 +1,8 @@
-#' retrieve an object based on a query
+#' retrieve 1000 items from an object based on a query
 #'
 #' @param class_name name of Parse class
 #' @param object_id if given, used to retrieve an object
+#' @param skip if given, specifies how many items to skip before first returned item
 #' @param ... extra arguments, not used
 #'
 #' @return a Parse object
@@ -40,9 +41,14 @@ no_listcol <- function(df) {
 }
 rbindx<-function(a,b) {rbind(no_listcol(a),no_listcol(b))}
 
-# get all records and concatenate the output into a single data frame
-# remove any columns containing lists before concatenating
-
+#' get all records and concatenate the output into a single data frame
+#'
+#' @param class_name name of Parse class
+#' @param object_id if given, used to retrieve an object
+#' @param ... extra arguments, not used
+#'
+#' @return a Parse object
+#' 
 #' @export
 parse_queryAll<-function(objName,...) {
   sum<-parse_query(objName,...)
