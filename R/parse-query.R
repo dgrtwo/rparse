@@ -51,16 +51,22 @@ rbindx<-function(a,b) {rbind(no_listcol(a),no_listcol(b))}
 #' 
 #' @export
 parse_queryAll<-function(objName,...) {
-  sum<-parse_query(objName,...)
+# max skip allowed in parse API is 10000
   skipcount<-1000
+  sum<-parse_query(objName,...)
   if (is.null(sum)) {NULL}
   else { 
-    repeat{
-      part<-parse_query(objName,skip=skipcount,...)
-      if (is.null(part)) {break}
-      else {
-        sum<-rbindx(sum,part)
-        skipcount <- skipcount+1000
+    if (nrow(sum) == skipcount) {
+      repeat{	  
+        part<-parse_query(objName,skip=skipcount,...)
+        if (is.null(part)) 
+	  {break}
+        else {
+          sum<-rbindx(sum,part)
+          skipcount <- skipcount+1000
+	if (nrow(part) < skipcount) 
+	  {break}
+        }
       }
     }
   }
