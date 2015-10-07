@@ -1,11 +1,12 @@
-#' retrieve an object based on a query
+#' retrieve 1000 items from an object based on a query
 #'
 #' @param class_name name of Parse class
 #' @param object_id if given, used to retrieve an object
+#' @param skip if given, specifies how many items to skip before first returned item
 #' @param ... extra arguments, not used
 #'
 #' @return a Parse object
-#'
+#' 
 #' @export
 parse_query <- function(class_name, object_id, limit = 1000, skip=0, ...) {
     url <- file.path("classes", class_name)
@@ -30,4 +31,44 @@ parse_query <- function(class_name, object_id, limit = 1000, skip=0, ...) {
     } else {
         as.parse_batch(ret, class_name)
     }
+}
+
+# support functions for queryAll
+
+no_listcol <- function(df) {
+  mask<-lapply(df[1,],function(x){!is.list(x)})
+  df[,as.vector(mask,mode='logical')]
+}
+rbindx<-function(a,b) {rbind(no_listcol(a),no_listcol(b))}
+
+#' get all records and concatenate the output into a single data frame
+#'
+#' @param class_name name of Parse class
+#' @param object_id if given, used to retrieve an object
+#' @param ... extra arguments, not used
+#'
+#' @return a Parse object
+#' 
+#' @export
+parse_queryAll<-function(objName,...) {
+# max skip allowed in parse API is 10000
+  skipcount<-1000
+  sum<-parse_query(objName,...)
+  if (is.null(sum)) {NULL}
+  else { 
+    if (nrow(sum) == skipcount) {
+      repeat{	  
+        part<-parse_query(objName,skip=skipcount,...)
+        if (is.null(part)) 
+	  {break}
+        else {
+          sum<-rbindx(sum,part)
+          skipcount <- skipcount+1000
+	if (nrow(part) < skipcount) 
+	  {break}
+        }
+      }
+    }
+  }
+  sum
 }

@@ -2,14 +2,16 @@
 % Please edit documentation in R/parse-query.R
 \name{parse_query}
 \alias{parse_query}
-\title{retrieve an object based on a query}
+\title{retrieve 1000 items from an object based on a query}
 \usage{
-parse_query(class_name, object_id, limit = 1000, ...)
+parse_query(class_name, object_id, limit = 1000, skip = 0, ...)
 }
 \arguments{
 \item{class_name}{name of Parse class}
 
 \item{object_id}{if given, used to retrieve an object}
+
+\item{skip}{if given, specifies how many items to skip before first returned item}
 
 \item{...}{extra arguments, not used}
 }
@@ -17,6 +19,6 @@ parse_query(class_name, object_id, limit = 1000, ...)
 a Parse object
 }
 \description{
-retrieve an object based on a query
+retrieve 1000 items from an object based on a query
 }
 
